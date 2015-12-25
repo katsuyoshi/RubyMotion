@@ -389,6 +389,7 @@ EOS
           ib_resources.concat(Dir.glob(File.join(dir, '**', '*.storyboard')).map { |storyboard| [storyboard, storyboard.sub(/\.storyboard$/, '.storyboardc')] })
           ib_resources.each do |src, dest|
             if !File.exist?(dest) or File.mtime(src) > File.mtime(dest)
+              system "/usr/bin/pkill ibtoold"
               App.info 'Compile', src
               sh "'#{File.join(config.xcode_dir, '/usr/bin/ibtool')}' --compile \"#{dest}\" \"#{src}\""
             end
